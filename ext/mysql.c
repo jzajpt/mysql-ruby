@@ -1074,7 +1074,11 @@ static VALUE fetch_hash2(VALUE obj, VALUE with_table)
         }
     }
     for (i=0; i<n; i++) {
-        rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_tainted_str_new(row[i], lengths[i]): Qnil);
+        if (fields[i].type == MYSQL_TYPE_BLOB) {
+            rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_tainted_str_new(row[i], lengths[i]): Qnil);
+        } else {
+            rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_external_str_new_with_enc(row[i], lengths[i], rb_utf8_encoding()): Qnil);
+        }
     }
     return hash;
 }
