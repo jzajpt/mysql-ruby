@@ -1078,9 +1078,9 @@ static VALUE fetch_hash2(VALUE obj, VALUE with_table)
 						/* To distinguish between binary and non-binary data for string data types, check whether the charsetnr value is 63.
 						   If so, the character set is binary, which indicates binary rather than non-binary data. */
 						if(fields[i].charsetnr == 63) {
-            	rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_tainted_str_new(row[i], lengths[i]): Qnil);
+            	  rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_tainted_str_new(row[i], lengths[i]): Qnil);
 						} else {
-							rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_external_str_new_with_enc(row[i], lengths[i], rb_utf8_encoding()): Qnil);
+							  rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_external_str_new_with_enc(row[i], lengths[i], rb_utf8_encoding()): Qnil);
 						}
         } else {
             rb_hash_aset(hash, rb_ary_entry(colname, i), row[i]? rb_external_str_new_with_enc(row[i], lengths[i], rb_utf8_encoding()): Qnil);
