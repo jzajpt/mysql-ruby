@@ -13,6 +13,17 @@ def die(message)
   exit 1
 end
 
+if !ENV["RC_ARCHS"] && RUBY_PLATFORM =~ /darwin/
+	mc_path = `which mysql_config`
+	ml_path = mc_path.split('bin')[0] + 'lib/libmysqlclient.dylib'
+	archs = []
+	lipo_archs = `lipo -info #{ml_path}`
+  archs << 'i386' if lipo_archs =~ /i386/
+  archs << 'x86_64' if lipo_archs =~ /x86_64/
+  archs << 'ppc' if lipo_archs =~ /ppc/
+ 	ENV["RC_ARCHS"] = archs.join(' ')
+end
+
 
 if /mswin32/ =~ RUBY_PLATFORM
   inc, lib = dir_config('mysql')
